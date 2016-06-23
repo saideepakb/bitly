@@ -1,4 +1,5 @@
 require 'uri'
+require 'net/ping'
 require "#{Rails.root}/lib/tasks/hash"
 
 class UrlsController < ApplicationController
@@ -45,20 +46,15 @@ class UrlsController < ApplicationController
     @url.click_count = 0;
     result = Url.last
     seed_str = "0";
-
     if result != nil
       seed_str = result.hash_val
     end
-
     @url.hash_val = Hash.create_new_hash(seed_str)
-
     respond_to do |format|
-      # if valid?(@url.link)
-      #   puts "Screwed"
-      #   format.html { render :new }
-      #   format.json { render json: @url.errors, status: :unprocessable_entity }
-      # els
-      if @url.save
+      if valid_url?(@url.link) == false
+        format.html { render :new }
+        format.json { render json: @url.errors, status: :unprocessable_entity }
+      elsif @url.save
         puts "SAVING OBJECT TO DB"
         format.html { redirect_to @url, notice: 'Url was successfully created.' }
         format.json { render :show, status: :created, location: @url }
@@ -66,7 +62,6 @@ class UrlsController < ApplicationController
         format.html { render :new }
         format.json { render json: @url.errors, status: :unprocessable_entity }
       end
-
     end
   end
 
@@ -105,8 +100,14 @@ class UrlsController < ApplicationController
       params.require(:url).permit(:link)
     end
 
-    def valid?(uri)
-      URI.parse(uri)
+    def valid_url?(uri)
+      uri = uri.strip
+      if uri == "" || uri !~ /\A#{URI::regexp(['http', 'https'])}\z/
+        return false
+      end
+      uri = URI.parse(uri)
+      check = Net::Ping::External.new(uri.host)
+      check.ping?
     rescue URI::InvalidURIError
       false
     end
