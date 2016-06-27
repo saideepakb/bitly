@@ -4,8 +4,13 @@ Rails.application.routes.draw do
   get 'urls/:hash_val' => 'urls#r'
   get 'r/:hash_val' => 'urls#r'
 
-  get 'b/' => 'urls#index_backbone'
-  get 'b/urls' => 'urls#get_backbone'
+  # get 'b/' => 'urls#index_backbone'
+  # get 'b/urls' => 'urls#get_backbone'
+  # post 'b/urls' => 'urls#create'
+  # get 'b/urls/new' => 'urls#new'
+  # get 'b/:id/edit' => 'urls#new'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

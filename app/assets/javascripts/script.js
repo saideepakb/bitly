@@ -1,15 +1,15 @@
-(function ($) {
+$(document).ready(
+function ($) {
   var Item = Backbone.Model.extend({
     defaults: {
-      link: 'http://google.com',
-      hash_val: '0',
-      count: 1
-    }
+      link: ''
+    },
+		urlRoot: 'http://localhost:3000/urls'
   });
 
 	var List = Backbone.Collection.extend({
-    model: Item,
-     url: 'http://localhost:3000/b/urls'
+		model: Item,
+		url: 'http://localhost:3000/urls'
   });
 
 	var ItemView = Backbone.View.extend({
@@ -19,26 +19,28 @@
     },
     render: function(){
 					console.log("B");
-          $(this.el).html('<span>'+this.model.get('link')+' '+this.model.get('hash_val')+'</span>');
-          return this; // for chainable calls, like .render().el
-        }
+          $(this.el).html('<span>'+this.model.get('link')+'     '+this.model.get('hash_val')+'</span>');
+          return this;
+    }
   });
 
-	var ListView = Backbone.View.extend({
-    el: $('body'), // el attaches to existing element
-    events: {
-      'click button#add': 'addItem'
-    },
+	var AppView = Backbone.View.extend({
+    el: $('#app'), // el attaches to existing element
+		events: {
+  		'keyup #urlInput': 'processKey'
+		},
     initialize: function () {
-      _.bindAll(this, 'render', 'appendItem');
+      _.bindAll(this, 'render', 'appendItem','processKey');
 			this.collection = new List();
 			var that = this;
+			console.log(this);
 			this.collection.fetch({
         success: function () {
             that.render();
         }
       });
     },
+
     render: function(){
       var self = this;
 			console.log(_(this.collection.models));
@@ -52,7 +54,25 @@
         model: item
       });
       $('ul', this.el).append(itemView.render().el);
-    }
+    },
+		processKey: function(e) {
+
+		  if(e.which === 13){
+				var newUrl = $('input').val();
+				if(newUrl != ''){
+					console.log(newUrl);
+					var urlModel = new Item();
+					var urlDetails = {link: newUrl};
+					urlModel.save(urlDetails, {
+						success: function (url) {
+							alert(JSON.stringify(url));
+						}
+					});
+				}
+			}
+		}
 	});
-	 var listView = new ListView();
-})(jQuery);
+
+	var appView = new AppView();
+
+});

@@ -15,6 +15,5 @@
 //= require .//underscore.js
 //= require .//backbone.js
 //= require .//script.js
-//= require turbolinks
 /*global $ */
 /*jshint unused:false */

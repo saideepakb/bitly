@@ -1,34 +1,5 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Urls</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Link</th>
-      <th>Hash val</th>
-      <th>Click Count </th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @urls.each do |url| %>
-      <tr>
-        <td><%= url.link %></td>
-        <td><%= 'http://localhost:3000/r/' + url.hash_val %></td>
-        <td><%= url.click_count %></td>
-        <td><%= link_to 'Show', url %></td>
-        <td><%= link_to 'Destroy', url, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Url', new_url_path %>
-
-
-
-<script src="assets/javascripts/script.js"></script>
+<div id="app">
+  <label> Urls</label>
+  <input id="urlInput" type='text'/>
+  <ul></ul>
+</div>
