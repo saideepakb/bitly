@@ -10,6 +10,17 @@ class UrlsController < ApplicationController
   def index
     @urls = Url.all
   end
+  
+  # GET /b
+  def index_backbone
+  end
+
+  # GET /b/urls
+  # GET /b/urls.json
+  def get_backbone
+    @urls = Url.all
+    render json: @urls
+  end
 
   # GET /urls/1
   # GET /urls/1.json

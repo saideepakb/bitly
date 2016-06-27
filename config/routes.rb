@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   resources :urls
   root 'urls#index'
+  get 'urls/:hash_val' => 'urls#r'
   get 'r/:hash_val' => 'urls#r'
 
+  get 'b/' => 'urls#index_backbone'
+  get 'b/urls' => 'urls#get_backbone'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

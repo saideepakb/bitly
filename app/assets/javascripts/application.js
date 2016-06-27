@@ -12,5 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require .//underscore.js
+//= require .//backbone.js
+//= require .//script.js
 //= require turbolinks
-//= require_tree .
+/*global $ */
+/*jshint unused:false */
