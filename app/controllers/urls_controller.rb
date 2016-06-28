@@ -10,7 +10,7 @@ class UrlsController < ApplicationController
   def index
     @urls = Url.all
   end
-  
+
   # GET /b
   def index_backbone
   end
@@ -66,7 +66,6 @@ class UrlsController < ApplicationController
         format.html { render :new }
         format.json { render json: @url.errors, status: :unprocessable_entity }
       elsif @url.save
-        puts "SAVING OBJECT TO DB"
         format.html { redirect_to @url, notice: 'Url was successfully created.' }
         format.json { render :show, status: :created, location: @url }
       else

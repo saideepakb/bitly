@@ -21,11 +21,12 @@ function ($) {
     _.bindAll(this, 'render', 'destroy'); // every function that uses 'this' as the current object should be in here
     },
     render: function(){
-					console.log("B");
-          var originalUrl = '<th>' + this.model.get('link') + '</th>';
-          var shortUrl = '<th>' + '<a id="link" href="http://localhost:3000/r/' + this.model.get('hash_val')+'" role="button" class="btn btn-success">Link</a>' + '</th>';
-          var clickCount = '<th>' + '<a href="#" id="destroy" role="button" class="btn btn-warning">Destroy</a>' + '</th>';
-          $(this.el).html( originalUrl + shortUrl + clickCount );
+          console.log(this.model);
+          var originalUrl = '<td>' + this.model.get('link') + '</td>';
+          var shortUrl = '<td id="link">http://localhost:3000/r/' + this.model.get('hash_val') +'</td>';
+          var clickCount = '<td>' + this.model.get('click_count') + '</td>';
+          var destroyUrl = '<td>' + '<a href="#" id="destroy" role="button" class="btn btn-warning">Destroy</a>' + '</td>';
+          $(this.el).html( originalUrl + shortUrl + clickCount + destroyUrl);
           return this;
     },
     destroy: function(){
@@ -51,7 +52,6 @@ function ($) {
       _.bindAll(this, 'render', 'appendItem','processKey');
 			this.collection = new List();
 			var that = this;
-			console.log(this);
 			this.collection.fetch({
         success: function () {
             that.render();
@@ -61,9 +61,7 @@ function ($) {
 
     render: function(){
       var self = this;
-			console.log(_(this.collection.models));
      _(this.collection.models).each(function(item){
-			 console.log("A");
        self.appendItem(item);
      }, this);
     },
@@ -71,19 +69,22 @@ function ($) {
       var itemView = new ItemView({
         model: item
       });
-      $('table', this.el).append(itemView.render().el);
+      $("tr").eq(0).after(itemView.render().el);
     },
 		processKey: function(e) {
-
 		  if(e.which === 13){
 				var newUrl = $('input').val();
 				if(newUrl != ''){
-					console.log(newUrl);
 					var urlModel = new Item();
 					var urlDetails = {link: newUrl};
 					urlModel.save(urlDetails, {
-						success: function (url) {
-							alert(JSON.stringify(url));
+						success: function (item) {
+              var itemView = new ItemView({
+                model: item
+              });
+              $("tr").eq(0).after(itemView.render().el);
+              $("tr").eq(1).addClass("success");
+              $("input").val("");
 						}
 					});
 				}
