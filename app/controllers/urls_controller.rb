@@ -35,7 +35,7 @@ class UrlsController < ApplicationController
       format.html { render :index }
       format.json { render json: @url.errors, status: :unprocessable_entity }
     else
-      @url.click_count += 1
+      @url.click_count = @url.click_count + 1
       @url.save
       redirect_to @url.link
     end

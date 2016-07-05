@@ -14,6 +14,10 @@
 //= require jquery_ujs
 //= require .//underscore.js
 //= require .//backbone.js
-//= require .//script.js
+//= require .//models/item.js
+//= require .//collections/items.js
+//= require .//views/item-view.js
+//= require .//views/app-view.js
+//= require .//app.js
 /*global $ */
 /*jshint unused:false */
