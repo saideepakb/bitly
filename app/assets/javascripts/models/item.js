@@ -7,6 +7,6 @@ var app = app || {};
       click_count: 0,
       hash_val: ''
     },
-		urlRoot: 'http://localhost:3000/urls'
+		urlRoot: '/urls'
   });
 })();

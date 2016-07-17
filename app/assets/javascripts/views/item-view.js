@@ -11,7 +11,7 @@ var app = app || {};
     },
     render: function(){
           var originalUrl = '<td>' + this.model.get('link') + '</td>';
-          var shortUrl = '<td id="link">http://localhost:3000/r/' + this.model.get('hash_val') +'</td>';
+          var shortUrl = '<td id="link">' + window.location.hostname + '/r/' + this.model.get('hash_val') +'</td>';
           var clickCount = '<td>' + this.model.get('click_count') + '</td>';
           var createdAt = '<td>' + this.model.get('created_at') + '</td>';
           var destroyUrl = '<td>' + '<a href="#" id="destroy" role="button" class="btn btn-warning">Destroy</a>' + '</td>';
