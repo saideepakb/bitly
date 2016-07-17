@@ -11,17 +11,6 @@ class UrlsController < ApplicationController
     @urls = Url.all
   end
 
-  # GET /b
-  def index_backbone
-  end
-
-  # GET /b/urls
-  # GET /b/urls.json
-  def get_backbone
-    @urls = Url.all
-    render json: @urls
-  end
-
   # GET /urls/1
   # GET /urls/1.json
   def show
@@ -46,10 +35,6 @@ class UrlsController < ApplicationController
     @url = Url.new
   end
 
-  # GET /urls/1/edit
-  def edit
-  end
-
   # POST /urls
   # POST /urls.json
   def create
@@ -70,20 +55,6 @@ class UrlsController < ApplicationController
         format.json { render :show, status: :created, location: @url }
       else
         format.html { render :new }
-        format.json { render json: @url.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /urls/1
-  # PATCH/PUT /urls/1.json
-  def update
-    respond_to do |format|
-      if @url.update(url_params)
-        format.html { redirect_to @url, notice: 'Url was successfully updated.' }
-        format.json { render :show, status: :ok, location: @url }
-      else
-        format.html { render :edit }
         format.json { render json: @url.errors, status: :unprocessable_entity }
       end
     end
