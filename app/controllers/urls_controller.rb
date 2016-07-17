@@ -89,6 +89,7 @@ class UrlsController < ApplicationController
     end
 
     def valid_url?(uri)
+      return true
       uri = uri.strip
       if uri == "" || uri !~ /\A#{URI::regexp(['http', 'https'])}\z/
         return false
