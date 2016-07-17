@@ -1,6 +1,6 @@
 require 'uri'
 require 'net/ping'
-require "#{Rails.root}/lib/tasks/hash"
+require "#{Rails.root}/lib/assets/hash_methods"
 
 class UrlsController < ApplicationController
   before_action :set_url, only: [:show, :edit, :update, :destroy]
@@ -8,7 +8,7 @@ class UrlsController < ApplicationController
   # GET /urls
   # GET /urls.json
   def index
-    @urls = Url.all
+    @urls = Url.where("is_deleted = false")
   end
 
   # GET /urls/1
@@ -19,8 +19,12 @@ class UrlsController < ApplicationController
   # GET /urls/r/001
   def r
     hash_val = params[:hash_val]
-    @url = Url.where(hash_val: hash_val).take
-    if @url == nil
+    id = Hash.create_id_from_hash(hash_val)
+
+    @url = Url.find(id)
+    puts "---------------------"
+    puts @url
+    if @url == nil || @url.is_deleted == t
       format.html { render :index }
       format.json { render json: @url.errors, status: :unprocessable_entity }
     else
@@ -40,12 +44,14 @@ class UrlsController < ApplicationController
   def create
     @url = Url.new(url_params)
     @url.click_count = 0;
+    @url.is_deleted = false
     result = Url.last
-    seed_str = "0";
+    prev_id = 0;
     if result != nil
-      seed_str = result.hash_val
+      prev_id = result.id
     end
-    @url.hash_val = Hash.create_new_hash(seed_str)
+    @url.id = prev_id + 1
+    @url.hash_val = Hash.create_hash_from_id(@url.id)
     respond_to do |format|
       if valid_url?(@url.link) == false
         format.html { render :new }
@@ -63,7 +69,8 @@ class UrlsController < ApplicationController
   # DELETE /urls/1
   # DELETE /urls/1.json
   def destroy
-    @url.destroy
+    @url.is_deleted = true
+    @url.save
     respond_to do |format|
       format.html { redirect_to urls_url, notice: 'Url was successfully destroyed.' }
       format.json { head :no_content }
